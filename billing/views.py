@@ -1,8 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import user_passes_test
 from .models import MembershipPlan, Payment, Member
 from .forms import MembershipPlanForm, PaymentForm, MemberForm
 
 
+def is_superuser(user):
+    return user.is_authenticated and user.is_superuser
+
+
+@user_passes_test(is_superuser)
 def billing_dashboard(request):
     total_payments = Payment.objects.count()
     paid_payments = Payment.objects.filter(payment_status='Paid').count()
@@ -18,11 +24,13 @@ def billing_dashboard(request):
     return render(request, 'billing/dashboard.html', context)
 
 
+@user_passes_test(is_superuser)
 def member_list(request):
     members = Member.objects.all().order_by('full_name')
     return render(request, 'billing/member_list.html', {'members': members})
 
 
+@user_passes_test(is_superuser)
 def add_member(request):
     form = MemberForm(request.POST or None)
     if form.is_valid():
@@ -31,11 +39,13 @@ def add_member(request):
     return render(request, 'billing/member_form.html', {'form': form})
 
 
+@user_passes_test(is_superuser)
 def plan_list(request):
     plans = MembershipPlan.objects.all().order_by('plan_name')
     return render(request, 'billing/plan_list.html', {'plans': plans})
 
 
+@user_passes_test(is_superuser)
 def add_plan(request):
     form = MembershipPlanForm(request.POST or None)
     if form.is_valid():
@@ -44,6 +54,7 @@ def add_plan(request):
     return render(request, 'billing/plan_form.html', {'form': form})
 
 
+@user_passes_test(is_superuser)
 def payment_list(request):
     payments = Payment.objects.select_related('member', 'membership_plan').all().order_by('-created_at')
 
@@ -63,6 +74,7 @@ def payment_list(request):
     })
 
 
+@user_passes_test(is_superuser)
 def add_payment(request):
     form = PaymentForm(request.POST or None)
 
@@ -78,6 +90,7 @@ def add_payment(request):
     return render(request, 'billing/payment_form.html', {'form': form})
 
 
+@user_passes_test(is_superuser)
 def receipt_view(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
     return render(request, 'billing/receipt.html', {'payment': payment})

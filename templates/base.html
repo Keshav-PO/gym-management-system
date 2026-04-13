@@ -128,10 +128,12 @@
             <h2>Gym System</h2>
             <a href="/dashboard/">Dashboard</a>
             <a href="/welcome/">Welcome</a>
-            <a href="/billing/">Billing</a>
-            <a href="/billing/members/">Billing Members</a>
-            <a href="/billing/plans/">Membership Plans</a>
-            <a href="/billing/payments/">Payments</a>
+            {% if user.is_superuser %}
+    <a href="/billing/">Billing</a>
+    <a href="/billing/members/">Billing Members</a>
+    <a href="/billing/plans/">Billing Plans</a>
+    <a href="/billing/payments/">Payments</a>
+{% endif %}
             <a href="/classes/">Classes</a>
             <a href="/trainers/assignments/">Trainers</a>
             <a href="/subscriptions/my-subscription/">My Subscription</a>

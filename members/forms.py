@@ -17,6 +17,16 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password']
+        help_texts = {
+            'username': '',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['username'].help_text = ''
+        self.fields['email'].help_text = ''
+        self.fields['password'].help_text = ''
 
     def save(self):
         user = User.objects.create_user(
@@ -48,10 +58,18 @@ class EditProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email']
+        help_texts = {
+            'username': '',
+        }
 
     def __init__(self, *args, **kwargs):
         self.current_user = kwargs.pop('user')
         super().__init__(*args, **kwargs)
+
+        self.fields['username'].help_text = ''
+        self.fields['email'].help_text = ''
+        self.fields['fitness_goal'].help_text = ''
+        self.fields['experience_level'].help_text = ''
 
         self.fields['fitness_goal'].initial = self.current_user.memberprofile.fitness_goal
         self.fields['experience_level'].initial = self.current_user.memberprofile.experience_level
