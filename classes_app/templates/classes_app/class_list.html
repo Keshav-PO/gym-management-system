@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule</title>
+    <link rel="stylesheet" href="{% static 'members/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Class Schedule</h1>
+        <p>Browse available gym classes and activities.</p>
+
+        {% for item in classes %}
+            <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 18px; margin-bottom: 18px;">
+                <h2 style="margin-top: 0;">{{ item.title }}</h2>
+                <p><strong>Date:</strong> {{ item.class_date }}</p>
+                <p><strong>Time:</strong> {{ item.class_time }}</p>
+                <p><strong>Capacity:</strong> {{ item.capacity }}</p>
+                <p>{{ item.description }}</p>
+
+                {% if user.is_authenticated %}
+                    <a class="back-link" href="/classes/register/{{ item.id }}/">Sign Up for Class</a>
+                {% else %}
+                    <p style="color: #b91c1c;">Please login to register for a class.</p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No classes available yet.</p>
+        {% endfor %}
+
+        <div class="nav-links">
+            <a href="/classes/my-classes/">My Classes</a>
+            <a href="/">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

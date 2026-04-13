@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Classes</title>
+    <link rel="stylesheet" href="{% static 'members/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>My Classes</h1>
+        <p>View the classes you have registered for.</p>
+
+        {% for registration in registrations %}
+            <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 18px; margin-bottom: 18px;">
+                <h2 style="margin-top: 0;">{{ registration.gym_class.title }}</h2>
+                <p><strong>Date:</strong> {{ registration.gym_class.class_date }}</p>
+                <p><strong>Time:</strong> {{ registration.gym_class.class_time }}</p>
+                <p><strong>Description:</strong> {{ registration.gym_class.description }}</p>
+            </div>
+        {% empty %}
+            <p>You have not registered for any classes yet.</p>
+        {% endfor %}
+
+        <div class="nav-links">
+            <a href="/classes/">View All Classes</a>
+            <a href="/">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
