@@ -15,3 +15,7 @@ def login_view(request):
 
 def reset_password(request):
     return render(request, 'members/reset_password.html')
+
+
+def edit_profile(request):
+    return render(request, 'members/edit_profile.html')
