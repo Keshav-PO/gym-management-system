@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Members</title>
+</head>
+<body>
+    <h1>Members</h1>
+    <a href="{% url 'add_member' %}">Add Member</a>
+    <a href="{% url 'billing_dashboard' %}">Back to Dashboard</a>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Joined On</th>
+        </tr>
+        {% for member in members %}
+        <tr>
+            <td>{{ member.full_name }}</td>
+            <td>{{ member.email }}</td>
+            <td>{{ member.phone_number }}</td>
+            <td>{{ member.joined_on }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

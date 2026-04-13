@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Membership Plans</title>
+</head>
+<body>
+    <h1>Membership Plans</h1>
+    <a href="{% url 'add_plan' %}">Add Plan</a>
+    <a href="{% url 'billing_dashboard' %}">Back to Dashboard</a>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Plan Name</th>
+            <th>Duration (Months)</th>
+            <th>Price</th>
+            <th>Description</th>
+        </tr>
+        {% for plan in plans %}
+        <tr>
+            <td>{{ plan.plan_name }}</td>
+            <td>{{ plan.duration_in_months }}</td>
+            <td>${{ plan.price }}</td>
+            <td>{{ plan.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

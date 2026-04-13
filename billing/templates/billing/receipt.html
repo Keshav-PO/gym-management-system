@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Receipt</title>
+</head>
+<body>
+    <h1>Payment Receipt</h1>
+
+    <p><strong>Receipt ID:</strong> {{ payment.id }}</p>
+    <p><strong>Member Name:</strong> {{ payment.member.full_name }}</p>
+    <p><strong>Membership Plan:</strong> {{ payment.membership_plan.plan_name }}</p>
+    <p><strong>Amount:</strong> ${{ payment.amount }}</p>
+    <p><strong>Billing Date:</strong> {{ payment.billing_date }}</p>
+    <p><strong>Due Date:</strong> {{ payment.due_date }}</p>
+    <p><strong>Payment Method:</strong> {{ payment.payment_method }}</p>
+    <p><strong>Status:</strong> {{ payment.payment_status }}</p>
+    <p><strong>Notes:</strong> {{ payment.notes }}</p>
+
+    <a href="{% url 'payment_list' %}">Back to Payments</a>
+</body>
+</html>

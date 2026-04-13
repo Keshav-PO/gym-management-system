@@ -1,15 +1,11 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile - Gym Management System</title>
-    <link rel="stylesheet" href="{% static 'members/style.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h1>Edit Profile</h1>
+{% extends 'public_base.html' %}
+
+{% block title %}Edit Profile | FitZone Gym{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <div class="form-card">
+        <h2>Edit Profile</h2>
         <p>Update your personal and fitness details below.</p>
 
         <form method="post">
@@ -17,26 +13,28 @@
 
             {{ form.non_field_errors }}
 
-            <label for="{{ form.username.id_for_label }}">Username:</label>
+            <label for="{{ form.username.id_for_label }}">Username</label>
             {{ form.username }}
             {{ form.username.errors }}
 
-            <label for="{{ form.email.id_for_label }}">Email:</label>
+            <label for="{{ form.email.id_for_label }}">Email</label>
             {{ form.email }}
             {{ form.email.errors }}
 
-            <label for="{{ form.fitness_goal.id_for_label }}">Fitness Goal:</label>
+            <label for="{{ form.fitness_goal.id_for_label }}">Fitness Goal</label>
             {{ form.fitness_goal }}
             {{ form.fitness_goal.errors }}
 
-            <label for="{{ form.experience_level.id_for_label }}">Experience Level:</label>
+            <label for="{{ form.experience_level.id_for_label }}">Experience Level</label>
             {{ form.experience_level }}
             {{ form.experience_level.errors }}
 
             <button type="submit">Save Changes</button>
         </form>
 
-        <a class="back-link" href="/">Back to Home</a>
+        <div class="helper-text">
+            <a href="{% url 'dashboard' %}">Go to Dashboard</a>
+        </div>
     </div>
-</body>
-</html>
+</section>
+{% endblock %}

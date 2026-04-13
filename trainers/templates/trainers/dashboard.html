@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Trainers{% endblock %}
+{% block page_title %}Trainers{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Trainer Management</h2>
+
+    <div class="card-grid">
+        <div class="card">
+            <h3>Assignments</h3>
+            <p><a href="/trainers/assignments/">View trainer assignments</a></p>
+        </div>
+
+        <div class="card">
+            <h3>Hours Tracking</h3>
+            <p><a href="/trainers/hours/">View trainer hours</a></p>
+        </div>
+    </div>
+{% endblock %}

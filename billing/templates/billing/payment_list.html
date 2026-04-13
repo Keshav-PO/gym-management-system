@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payments</title>
+</head>
+<body>
+    <h1>Payment History</h1>
+
+    <a href="{% url 'add_payment' %}">Add Payment</a>
+    <a href="{% url 'billing_dashboard' %}">Back to Dashboard</a>
+
+    <form method="get">
+        <input type="text" name="member" placeholder="Search member name" value="{{ selected_member|default:'' }}">
+        <select name="status">
+            <option value="">All Status</option>
+            <option value="Paid" {% if selected_status == 'Paid' %}selected{% endif %}>Paid</option>
+            <option value="Pending" {% if selected_status == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Unpaid" {% if selected_status == 'Unpaid' %}selected{% endif %}>Unpaid</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>ID</th>
+            <th>Member</th>
+            <th>Plan</th>
+            <th>Amount</th>
+            <th>Billing Date</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Method</th>
+            <th>Receipt</th>
+        </tr>
+        {% for payment in payments %}
+        <tr>
+            <td>{{ payment.id }}</td>
+            <td>{{ payment.member.full_name }}</td>
+            <td>{{ payment.membership_plan.plan_name }}</td>
+            <td>${{ payment.amount }}</td>
+            <td>{{ payment.billing_date }}</td>
+            <td>{{ payment.due_date }}</td>
+            <td>{{ payment.payment_status }}</td>
+            <td>{{ payment.payment_method }}</td>
+            <td><a href="{% url 'receipt_view' payment.id %}">View Receipt</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

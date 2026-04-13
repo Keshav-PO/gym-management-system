@@ -4,6 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import RegisterForm, EditProfileForm
 
+from classes_app.models import GymClass
+from subscriptions.models import MembershipPlan
+from billing.models import Payment
+from trainers.models import Trainer
+
 
 def home(request):
     return render(request, 'members/home.html')
@@ -14,7 +19,7 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('login')
     else:
         form = RegisterForm()
 
@@ -32,7 +37,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('dashboard')
         else:
             error_message = 'Invalid username or password.'
 
@@ -76,8 +81,20 @@ def edit_profile(request):
         form = EditProfileForm(request.POST, instance=request.user, user=request.user)
         if form.is_valid():
             form.save(request.user)
-            return redirect('home')
+            return redirect('dashboard')
     else:
         form = EditProfileForm(instance=request.user, user=request.user)
 
     return render(request, 'members/edit_profile.html', {'form': form})
+
+
+@login_required
+def dashboard(request):
+    context = {
+        'total_members': User.objects.count(),
+        'total_plans': MembershipPlan.objects.count(),
+        'total_payments': Payment.objects.count(),
+        'total_trainers': Trainer.objects.count(),
+        'total_classes': GymClass.objects.count(),
+    }
+    return render(request, 'dashboard.html', context)

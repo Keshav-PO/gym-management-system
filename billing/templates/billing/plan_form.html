@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Membership Plan</title>
+</head>
+<body>
+    <h1>Add Membership Plan</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Plan</button>
+    </form>
+
+    <a href="{% url 'plan_list' %}">Back</a>
+</body>
+</html>

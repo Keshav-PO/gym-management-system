@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Billing Dashboard</title>
+</head>
+<body>
+    <h1>Billing Dashboard</h1>
+
+    <p>Total Payments: {{ total_payments }}</p>
+    <p>Paid: {{ paid_payments }}</p>
+    <p>Pending: {{ pending_payments }}</p>
+    <p>Unpaid: {{ unpaid_payments }}</p>
+
+    <hr>
+
+    <a href="{% url 'member_list' %}">Members</a> |
+    <a href="{% url 'plan_list' %}">Membership Plans</a> |
+    <a href="{% url 'payment_list' %}">Payments</a>
+</body>
+</html>
