@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Assignments</title>
+    <link rel="stylesheet" href="{% static 'members/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Trainer Assignments</h1>
+        <p>View trainers assigned to gym classes.</p>
+
+        {% for item in assignments %}
+            <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 18px; margin-bottom: 18px;">
+                <h2 style="margin-top: 0;">{{ item.trainer.name }}</h2>
+                <p><strong>Specialty:</strong> {{ item.trainer.specialty }}</p>
+                <p><strong>Assigned Class:</strong> {{ item.gym_class.title }}</p>
+                <p><strong>Class Date:</strong> {{ item.gym_class.class_date }}</p>
+                <p><strong>Assigned Date:</strong> {{ item.assigned_date }}</p>
+            </div>
+        {% empty %}
+            <p>No trainer assignments available yet.</p>
+        {% endfor %}
+
+        <div class="nav-links">
+            <a href="/trainers/hours/">Trainer Hours</a>
+            <a href="/">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

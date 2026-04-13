@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Hours</title>
+    <link rel="stylesheet" href="{% static 'members/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Trainer Hours</h1>
+        <p>Track working hours completed by trainers.</p>
+
+        {% for item in hours %}
+            <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 18px; margin-bottom: 18px;">
+                <h2 style="margin-top: 0;">{{ item.trainer.name }}</h2>
+                <p><strong>Class:</strong> {{ item.gym_class.title }}</p>
+                <p><strong>Work Date:</strong> {{ item.work_date }}</p>
+                <p><strong>Hours Worked:</strong> {{ item.hours_worked }}</p>
+                <p><strong>Hourly Rate:</strong> ${{ item.trainer.hourly_rate }}</p>
+            </div>
+        {% empty %}
+            <p>No trainer hours recorded yet.</p>
+        {% endfor %}
+
+        <div class="nav-links">
+            <a href="/trainers/assignments/">Trainer Assignments</a>
+            <a href="/">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
