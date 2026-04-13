@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm
+from django.contrib.auth.decorators import login_required
+from .forms import RegisterForm, EditProfileForm
 
 
 def home(request):
@@ -46,5 +47,14 @@ def reset_password(request):
     return render(request, 'members/reset_password.html')
 
 
+@login_required
 def edit_profile(request):
-    return render(request, 'members/edit_profile.html')
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user, user=request.user)
+        if form.is_valid():
+            form.save(request.user)
+            return redirect('home')
+    else:
+        form = EditProfileForm(instance=request.user, user=request.user)
+
+    return render(request, 'members/edit_profile.html', {'form': form})

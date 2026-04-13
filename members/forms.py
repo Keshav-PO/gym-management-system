@@ -32,3 +32,43 @@ class RegisterForm(forms.ModelForm):
         )
 
         return user
+
+
+class EditProfileForm(forms.ModelForm):
+    email = forms.EmailField()
+    fitness_goal = forms.CharField(max_length=100)
+    experience_level = forms.ChoiceField(
+        choices=[
+            ('Beginner', 'Beginner'),
+            ('Intermediate', 'Intermediate'),
+            ('Advanced', 'Advanced'),
+        ]
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+    def __init__(self, *args, **kwargs):
+        self.current_user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+
+        self.fields['fitness_goal'].initial = self.current_user.memberprofile.fitness_goal
+        self.fields['experience_level'].initial = self.current_user.memberprofile.experience_level
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        existing_user = User.objects.filter(username=username).exclude(id=self.current_user.id).first()
+        if existing_user:
+            raise forms.ValidationError('This username is already taken.')
+        return username
+
+    def save(self, user):
+        user = super().save(commit=True)
+
+        profile = user.memberprofile
+        profile.fitness_goal = self.cleaned_data['fitness_goal']
+        profile.experience_level = self.cleaned_data['experience_level']
+        profile.save()
+
+        return user
