@@ -1,21 +1,194 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Receipt</title>
-</head>
-<body>
-    <h1>Payment Receipt</h1>
+{% extends 'base.html' %}
 
-    <p><strong>Receipt ID:</strong> {{ payment.id }}</p>
-    <p><strong>Member Name:</strong> {{ payment.member.full_name }}</p>
-    <p><strong>Membership Plan:</strong> {{ payment.membership_plan.plan_name }}</p>
-    <p><strong>Amount:</strong> ${{ payment.amount }}</p>
-    <p><strong>Billing Date:</strong> {{ payment.billing_date }}</p>
-    <p><strong>Due Date:</strong> {{ payment.due_date }}</p>
-    <p><strong>Payment Method:</strong> {{ payment.payment_method }}</p>
-    <p><strong>Status:</strong> {{ payment.payment_status }}</p>
-    <p><strong>Notes:</strong> {{ payment.notes }}</p>
+{% block title %}Payment Receipt{% endblock %}
+{% block page_title %}Payment Receipt{% endblock %}
 
-    <a href="{% url 'payment_list' %}">Back to Payments</a>
-</body>
-</html>
+{% block content %}
+<style>
+    .receipt-box {
+        background: white;
+        max-width: 750px;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        border-top: 5px solid #ff4d4d;
+    }
+
+    .receipt-header {
+        margin-bottom: 25px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+    }
+
+    .receipt-header h2 {
+        margin: 0;
+        color: #111;
+    }
+
+    .receipt-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 30px;
+        margin-bottom: 25px;
+    }
+
+    .receipt-item {
+        background: #f9f9f9;
+        padding: 14px;
+        border-radius: 8px;
+    }
+
+    .receipt-item strong {
+        display: block;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .receipt-item span {
+        color: #555;
+    }
+
+    .status-paid {
+        color: green;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        color: orange;
+        font-weight: bold;
+    }
+
+    .status-unpaid {
+        color: red;
+        font-weight: bold;
+    }
+
+    .notes-box {
+        margin-top: 15px;
+        background: #f9f9f9;
+        padding: 16px;
+        border-radius: 8px;
+    }
+
+    .notes-box strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .notes-box p {
+        margin: 0;
+        color: #555;
+    }
+
+    .receipt-actions {
+        margin-top: 25px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .btn-red {
+        display: inline-block;
+        background: #ff4d4d;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .btn-red:hover {
+        background: #e63939;
+    }
+
+    .btn-grey {
+        display: inline-block;
+        background: #666;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .btn-grey:hover {
+        background: #444;
+    }
+
+    @media (max-width: 700px) {
+        .receipt-details {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="receipt-box">
+    <div class="receipt-header">
+        <h2>Payment Receipt</h2>
+    </div>
+
+    <div class="receipt-details">
+        <div class="receipt-item">
+            <strong>Receipt ID</strong>
+            <span>{{ payment.id }}</span>
+        </div>
+
+        <div class="receipt-item">
+            <strong>Member Name</strong>
+            <span>{{ payment.member.full_name }}</span>
+        </div>
+
+        <div class="receipt-item">
+            <strong>Membership Plan</strong>
+            <span>{{ payment.membership_plan.plan_name }}</span>
+        </div>
+
+        <div class="receipt-item">
+            <strong>Amount</strong>
+            <span>${{ payment.amount }}</span>
+        </div>
+
+        <div class="receipt-item">
+            <strong>Billing Date</strong>
+            <span>{{ payment.billing_date }}</span>
+        </div>
+
+        <div class="receipt-item">
+            <strong>Due Date</strong>
+            <span>{{ payment.due_date }}</span>
+        </div>
+
+        <div class="receipt-item">
+            <strong>Payment Method</strong>
+            <span>{{ payment.payment_method }}</span>
+        </div>
+
+        <div class="receipt-item">
+            <strong>Status</strong>
+            <span class="
+                {% if payment.payment_status == 'Paid' %}status-paid{% endif %}
+                {% if payment.payment_status == 'Pending' %}status-pending{% endif %}
+                {% if payment.payment_status == 'Unpaid' %}status-unpaid{% endif %}
+            ">
+                {{ payment.payment_status }}
+            </span>
+        </div>
+    </div>
+
+    <div class="notes-box">
+        <strong>Notes</strong>
+        <p>
+            {% if payment.notes %}
+                {{ payment.notes }}
+            {% else %}
+                No notes available.
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="receipt-actions">
+        <a href="{% url 'payment_list' %}" class="btn-grey">Back to Payments</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,26 +1,133 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Payments</title>
-</head>
-<body>
-    <h1>Payment History</h1>
+{% extends 'base.html' %}
 
-    <a href="{% url 'add_payment' %}">Add Payment</a>
-    <a href="{% url 'billing_dashboard' %}">Back to Dashboard</a>
+{% block title %}Payments{% endblock %}
+{% block page_title %}Payments{% endblock %}
 
+{% block content %}
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .filter-box {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    .filter-box form {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 15px;
+        align-items: end;
+    }
+
+    .filter-box input,
+    .filter-box select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    .table-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .styled-table th {
+        background: #111;
+        color: white;
+        padding: 14px;
+        text-align: left;
+    }
+
+    .styled-table td {
+        padding: 14px;
+        border-bottom: 1px solid #eee;
+        color: #444;
+    }
+
+    .styled-table tr:hover {
+        background: #f9f9f9;
+    }
+
+    .btn-red {
+        display: inline-block;
+        background: #ff4d4d;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .btn-red:hover {
+        background: #e63939;
+    }
+
+    .status-paid {
+        color: green;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        color: orange;
+        font-weight: bold;
+    }
+
+    .status-unpaid {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+
+<div class="page-header">
+    <h2>Payment History</h2>
+    <a href="{% url 'add_payment' %}" class="btn-red">Add Payment</a>
+</div>
+
+<div class="filter-box">
     <form method="get">
-        <input type="text" name="member" placeholder="Search member name" value="{{ selected_member|default:'' }}">
-        <select name="status">
-            <option value="">All Status</option>
-            <option value="Paid" {% if selected_status == 'Paid' %}selected{% endif %}>Paid</option>
-            <option value="Pending" {% if selected_status == 'Pending' %}selected{% endif %}>Pending</option>
-            <option value="Unpaid" {% if selected_status == 'Unpaid' %}selected{% endif %}>Unpaid</option>
-        </select>
-        <button type="submit">Filter</button>
-    </form>
+        <div>
+            <label>Search Member</label>
+            <input type="text" name="member" value="{{ selected_member|default:'' }}">
+        </div>
 
-    <table border="1" cellpadding="8">
+        <div>
+            <label>Status</label>
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="Paid" {% if selected_status == 'Paid' %}selected{% endif %}>Paid</option>
+                <option value="Pending" {% if selected_status == 'Pending' %}selected{% endif %}>Pending</option>
+                <option value="Unpaid" {% if selected_status == 'Unpaid' %}selected{% endif %}>Unpaid</option>
+            </select>
+        </div>
+
+        <div>
+            <button type="submit" class="btn-red">Filter</button>
+        </div>
+    </form>
+</div>
+
+<div class="table-card">
+    <table class="styled-table">
         <tr>
             <th>ID</th>
             <th>Member</th>
@@ -40,11 +147,19 @@
             <td>${{ payment.amount }}</td>
             <td>{{ payment.billing_date }}</td>
             <td>{{ payment.due_date }}</td>
-            <td>{{ payment.payment_status }}</td>
+            <td>
+                <span class="
+                    {% if payment.payment_status == 'Paid' %}status-paid{% endif %}
+                    {% if payment.payment_status == 'Pending' %}status-pending{% endif %}
+                    {% if payment.payment_status == 'Unpaid' %}status-unpaid{% endif %}
+                ">
+                    {{ payment.payment_status }}
+                </span>
+            </td>
             <td>{{ payment.payment_method }}</td>
-            <td><a href="{% url 'receipt_view' payment.id %}">View Receipt</a></td>
+            <td><a href="{% url 'receipt_view' payment.id %}">View</a></td>
         </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+</div>
+{% endblock %}

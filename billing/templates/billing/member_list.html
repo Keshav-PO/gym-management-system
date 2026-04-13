@@ -1,14 +1,99 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Members</title>
-</head>
-<body>
-    <h1>Members</h1>
-    <a href="{% url 'add_member' %}">Add Member</a>
-    <a href="{% url 'billing_dashboard' %}">Back to Dashboard</a>
+{% extends 'base.html' %}
 
-    <table border="1" cellpadding="8">
+{% block title %}Billing Members{% endblock %}
+{% block page_title %}Billing Members{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        color: #111;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .table-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .styled-table th {
+        background: #111;
+        color: white;
+        padding: 14px;
+        text-align: left;
+    }
+
+    .styled-table td {
+        padding: 14px;
+        border-bottom: 1px solid #eee;
+        color: #444;
+    }
+
+    .styled-table tr:hover {
+        background: #f9f9f9;
+    }
+
+    .btn-red {
+        display: inline-block;
+        background: #ff4d4d;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .btn-red:hover {
+        background: #e63939;
+    }
+
+    .btn-grey {
+        display: inline-block;
+        background: #666;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .btn-grey:hover {
+        background: #444;
+    }
+</style>
+
+<div class="page-header">
+    <h2>Billing Members</h2>
+
+    <div class="header-actions">
+        <a href="{% url 'add_member' %}" class="btn-red">Add Member</a>
+        <a href="{% url 'billing_dashboard' %}" class="btn-grey">Back to Dashboard</a>
+    </div>
+</div>
+
+<div class="table-card">
+    <table class="styled-table">
         <tr>
             <th>Name</th>
             <th>Email</th>
@@ -22,7 +107,11 @@
             <td>{{ member.phone_number }}</td>
             <td>{{ member.joined_on }}</td>
         </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No members found.</td>
+        </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,17 +1,85 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Member</title>
-</head>
-<body>
-    <h1>Add Member</h1>
+{% extends 'base.html' %}
 
+{% block title %}Add Member{% endblock %}
+{% block page_title %}Add Member{% endblock %}
+
+{% block content %}
+<style>
+    .form-box {
+        background: white;
+        max-width: 700px;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    .form-box form p {
+        margin-bottom: 16px;
+    }
+
+    .form-box label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 6px;
+        color: #333;
+    }
+
+    .form-box input,
+    .form-box select,
+    .form-box textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .btn-red {
+        display: inline-block;
+        background: #ff4d4d;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-red:hover {
+        background: #e63939;
+    }
+
+    .btn-grey {
+        display: inline-block;
+        background: #666;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .btn-grey:hover {
+        background: #444;
+    }
+</style>
+
+<div class="form-box">
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save Member</button>
-    </form>
 
-    <a href="{% url 'member_list' %}">Back</a>
-</body>
-</html>
+        <div class="form-actions">
+            <button type="submit" class="btn-red">Save Member</button>
+            <a href="{% url 'member_list' %}" class="btn-grey">Back</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
