@@ -8,12 +8,25 @@
     <link rel="stylesheet" href="{% static 'members/style.css' %}">
 </head>
 <body>
-    <h1>Gym Management System</h1>
-    <p>Welcome to the Gym Management System project.</p>
+    <div class="container">
+        <h1>Gym Management System</h1>
+        <p>Welcome to the Gym Management System project.</p>
 
-    <a href="/register/">Go to Register Page</a>
-    <a href="/login/">Go to Login Page</a>
-    <a href="/reset-password/">Go to Reset Password Page</a>
-    <a href="/edit-profile/">Go to Edit Profile Page</a>
+        {% if user.is_authenticated %}
+            <p><strong>Logged in as:</strong> {{ user.username }}</p>
+            <div class="nav-links">
+                <a href="/edit-profile/">Edit Profile</a>
+                <a href="/reset-password/">Reset Password</a>
+                <a href="/logout/">Logout</a>
+            </div>
+        {% else %}
+            <div class="nav-links">
+                <a href="/register/">Register</a>
+                <a href="/login/">Login</a>
+                <a href="/reset-password/">Reset Password</a>
+                <a href="/edit-profile/">Edit Profile</a>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>

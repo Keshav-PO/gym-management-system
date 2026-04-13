@@ -8,32 +8,17 @@
     <link rel="stylesheet" href="{% static 'members/style.css' %}">
 </head>
 <body>
-    <h1>Register Account</h1>
+    <div class="container">
+        <h1>Register Account</h1>
+        <p>Create your gym member account below.</p>
 
-    <form>
-        <label for="fullname">Full Name:</label><br>
-        <input type="text" id="fullname" name="fullname"><br><br>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create Account</button>
+        </form>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br><br>
-
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br><br>
-
-        <label for="goal">Fitness Goal:</label><br>
-        <input type="text" id="goal" name="goal"><br><br>
-
-        <label for="experience">Experience Level:</label><br>
-        <select id="experience" name="experience">
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-        </select><br><br>
-
-        <button type="submit">Create Account</button>
-    </form>
-
-    <br>
-    <a href="/">Back to Home</a>
+        <a class="back-link" href="/">Back to Home</a>
+    </div>
 </body>
 </html>
