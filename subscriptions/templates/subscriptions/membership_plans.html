@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Plans</title>
+    <link rel="stylesheet" href="{% static 'members/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Membership Plans</h1>
+        <p>Choose a plan that best suits your fitness journey.</p>
+
+        {% for plan in plans %}
+            <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 18px; margin-bottom: 18px;">
+                <h2 style="margin-top: 0;">{{ plan.name }}</h2>
+                <p><strong>Price:</strong> ${{ plan.price }}</p>
+                <p><strong>Duration:</strong> {{ plan.duration_months }} month(s)</p>
+                <p>{{ plan.description }}</p>
+
+                {% if user.is_authenticated %}
+                    <a class="back-link" href="/subscriptions/choose/{{ plan.id }}/">Choose This Plan</a>
+                {% else %}
+                    <p style="color: #b91c1c;">Please login to select a plan.</p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No membership plans available yet.</p>
+        {% endfor %}
+
+        <a class="back-link" href="/">Back to Home</a>
+    </div>
+</body>
+</html>

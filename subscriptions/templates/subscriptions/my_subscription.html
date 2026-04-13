@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Subscription</title>
+    <link rel="stylesheet" href="{% static 'members/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>My Subscription</h1>
+        <p>View your current membership subscription details below.</p>
+
+        {% if subscription %}
+            <p><strong>Plan:</strong> {{ subscription.plan.name }}</p>
+            <p><strong>Price:</strong> ${{ subscription.plan.price }}</p>
+            <p><strong>Status:</strong> {{ subscription.status }}</p>
+            <p><strong>Start Date:</strong> {{ subscription.start_date }}</p>
+            <p><strong>End Date:</strong> {{ subscription.end_date }}</p>
+            <p><strong>Description:</strong> {{ subscription.plan.description }}</p>
+        {% else %}
+            <p>You do not have an active subscription yet.</p>
+        {% endif %}
+
+        <div class="nav-links">
+            <a href="/subscriptions/plans/">View Plans</a>
+            <a href="/">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

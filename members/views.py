@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .forms import RegisterForm, EditProfileForm
 
 
@@ -44,7 +45,29 @@ def logout_view(request):
 
 
 def reset_password(request):
-    return render(request, 'members/reset_password.html')
+    success_message = None
+    error_message = None
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        new_password = request.POST.get('new_password')
+
+        try:
+            user = User.objects.get(email=email)
+            user.set_password(new_password)
+            user.save()
+            success_message = 'Password reset successful. You can now log in with your new password.'
+        except User.DoesNotExist:
+            error_message = 'No user account was found with that email address.'
+
+    return render(
+        request,
+        'members/reset_password.html',
+        {
+            'success_message': success_message,
+            'error_message': error_message
+        }
+    )
 
 
 @login_required
