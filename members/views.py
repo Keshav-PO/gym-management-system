@@ -11,3 +11,7 @@ def register(request):
 
 def login_view(request):
     return render(request, 'members/login.html')
+
+
+def reset_password(request):
+    return render(request, 'members/reset_password.html')
