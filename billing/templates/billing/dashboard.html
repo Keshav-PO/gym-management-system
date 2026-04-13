@@ -1,20 +1,81 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Billing Dashboard</title>
+    <link rel="stylesheet" href="{% static 'members/style.css' %}">
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+            margin-top: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #334155;
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 26px;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+    </style>
 </head>
 <body>
-    <h1>Billing Dashboard</h1>
+    <div class="container">
+        <h1>Billing Dashboard</h1>
+        <p class="section-title">Monitor payment activity and navigate billing management sections.</p>
 
-    <p>Total Payments: {{ total_payments }}</p>
-    <p>Paid: {{ paid_payments }}</p>
-    <p>Pending: {{ pending_payments }}</p>
-    <p>Unpaid: {{ unpaid_payments }}</p>
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <h2>Total Payments</h2>
+                <p>{{ total_payments }}</p>
+            </div>
 
-    <hr>
+            <div class="stat-card">
+                <h2>Paid</h2>
+                <p>{{ paid_payments }}</p>
+            </div>
 
-    <a href="{% url 'member_list' %}">Members</a> |
-    <a href="{% url 'plan_list' %}">Membership Plans</a> |
-    <a href="{% url 'payment_list' %}">Payments</a>
+            <div class="stat-card">
+                <h2>Pending</h2>
+                <p>{{ pending_payments }}</p>
+            </div>
+
+            <div class="stat-card">
+                <h2>Unpaid</h2>
+                <p>{{ unpaid_payments }}</p>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="{% url 'member_list' %}">Members</a>
+            <a href="{% url 'plan_list' %}">Membership Plans</a>
+            <a href="{% url 'payment_list' %}">Payments</a>
+        </div>
+    </div>
 </body>
 </html>
