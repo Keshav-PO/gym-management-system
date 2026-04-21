@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Assign Trainer{% endblock %}
+{% block page_title %}Assign Trainer to Class{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Assign Trainer</h2>
+
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="trainer">Select Trainer</label>
+        <select name="trainer" required>
+            {% for trainer in trainers %}
+                <option value="{{ trainer.id }}">{{ trainer.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="gym_class">Select Class</label>
+        <select name="gym_class" required>
+            {% for c in classes %}
+                <option value="{{ c.id }}">{{ c.title }} ({{ c.class_date }})</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Assign Trainer</button>
+    </form>
+</div>
+
+<div class="helper-text">
+    <a href="{% url 'trainer_assignments' %}">View Assignments</a>
+</div>
+{% endblock %}

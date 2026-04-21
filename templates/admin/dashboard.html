@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+{% block page_title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<style>
+.dashboard-header {
+    margin-bottom: 25px;
+}
+
+.dashboard-header h2 {
+    font-size: 26px;
+    color: #111827;
+    margin-bottom: 5px;
+}
+
+.dashboard-header p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+}
+
+.card.members::before { background: #3b82f6; }
+.card.plans::before { background: #10b981; }
+.card.payments::before { background: #f59e0b; }
+.card.classes::before { background: #8b5cf6; }
+.card.trainers::before { background: #ef4444; }
+
+.card h3 {
+    font-size: 15px;
+    color: #6b7280;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 32px;
+    font-weight: bold;
+    color: #111827;
+}
+
+.card-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 22px;
+    opacity: 0.15;
+}
+
+.quick-actions {
+    margin-top: 35px;
+}
+
+.quick-actions h3 {
+    margin-bottom: 15px;
+    color: #111827;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.action-btn {
+    display: inline-block;
+    padding: 12px 18px;
+    background: #ff4d4d;
+    color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.action-btn:hover {
+    background: #e63939;
+}
+</style>
+
+<div class="dashboard-header">
+    <h2>System Overview</h2>
+    <p>Quick summary of your gym management system</p>
+</div>
+
+<div class="card-grid">
+    <div class="card members">
+        <div class="card-icon">👥</div>
+        <h3>Total Members</h3>
+        <p>{{ total_members }}</p>
+    </div>
+
+    <div class="card plans">
+        <div class="card-icon">📦</div>
+        <h3>Membership Plans</h3>
+        <p>{{ total_plans }}</p>
+    </div>
+
+    <div class="card payments">
+        <div class="card-icon">💳</div>
+        <h3>Payments</h3>
+        <p>{{ total_payments }}</p>
+    </div>
+
+    <div class="card classes">
+        <div class="card-icon">🏋️</div>
+        <h3>Classes</h3>
+        <p>{{ total_classes }}</p>
+    </div>
+
+    <div class="card trainers">
+        <div class="card-icon">🧑‍🏫</div>
+        <h3>Trainers</h3>
+        <p>{{ total_trainers }}</p>
+    </div>
+</div>
+
+<div class="quick-actions">
+    <h3>Quick Actions</h3>
+    <div class="action-buttons">
+        <a href="{% url 'class_create' %}" class="action-btn">+ Add Class</a>
+        <a href="{% url 'trainer_assignments' %}" class="action-btn">Trainer Assignments</a>
+        <a href="{% url 'trainer_hours' %}" class="action-btn">Trainer Hours</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,32 +1,28 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Classes</title>
-    <link rel="stylesheet" href="{% static 'members/style.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h1>My Classes</h1>
-        <p>View the classes you have registered for.</p>
+{% extends 'base.html' %}
 
+{% block title %}My Classes{% endblock %}
+{% block page_title %}My Classes{% endblock %}
+
+{% block content %}
+<h2 class="section-title">My Registered Classes</h2>
+
+<div class="table-card">
+    {% if registrations %}
         {% for registration in registrations %}
-            <div style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 18px; margin-bottom: 18px;">
-                <h2 style="margin-top: 0;">{{ registration.gym_class.title }}</h2>
+            <div class="card" style="margin-bottom: 18px;">
+                <h3>{{ registration.gym_class.title }}</h3>
                 <p><strong>Date:</strong> {{ registration.gym_class.class_date }}</p>
                 <p><strong>Time:</strong> {{ registration.gym_class.class_time }}</p>
                 <p><strong>Description:</strong> {{ registration.gym_class.description }}</p>
             </div>
-        {% empty %}
-            <p>You have not registered for any classes yet.</p>
         {% endfor %}
+    {% else %}
+        <p class="empty-text">You have not registered for any classes yet.</p>
+    {% endif %}
 
-        <div class="nav-links">
-            <a href="/classes/">View All Classes</a>
-            <a href="{% url 'dashboard' %}">Go to Dashboard</a>
-        </div>
+    <div class="helper-text" style="margin-top: 20px;">
+        <a href="{% url 'class_list' %}">View All Classes</a> |
+        <a href="{% url 'member_dashboard' %}">Go to Dashboard</a>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

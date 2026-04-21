@@ -135,6 +135,119 @@
         color: #ddd;
     }
 
+    .plan-link,
+    .service-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        cursor: pointer;
+    }
+
+    .plan-link .plan-card,
+    .service-link .card {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .plan-link .plan-card:hover,
+    .service-link .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .modal-content {
+        background: #fff;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        animation: fadeIn 0.25s ease;
+    }
+
+    .modal-header {
+        background: #cfeeee;
+        padding: 22px 24px;
+        position: relative;
+    }
+
+    .modal-header h3 {
+        font-size: 30px;
+        color: #0f4c5c;
+        margin-bottom: 8px;
+    }
+
+    .modal-badge {
+        display: inline-block;
+        background: #0fb9b1;
+        color: white;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 20px;
+    }
+
+    .modal-body {
+        padding: 24px;
+    }
+
+    .modal-body ul {
+        padding-left: 20px;
+        margin: 16px 0;
+    }
+
+    .modal-body li {
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .modal-price {
+        font-size: 34px;
+        font-weight: bold;
+        color: #0f4c5c;
+        margin: 20px 0 10px;
+    }
+
+    .modal-note {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 18px;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .close-btn {
+        position: absolute;
+        right: 18px;
+        top: 14px;
+        font-size: 28px;
+        cursor: pointer;
+        color: #333;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 900px) {
         .about-grid,
         .card-grid {
@@ -154,9 +267,20 @@
             <p>
                 Welcome to FitZone Gym, where fitness meets motivation. Join our gym to enjoy professional training, modern equipment, flexible classes, and a healthier lifestyle.
             </p>
+            
+
             <div class="hero-buttons">
-                <a href="{% url 'register' %}" class="btn btn-primary">Get Started</a>
-                <a href="{% url 'login' %}" class="btn btn-login">Member Login</a>
+                {% if user.is_authenticated %}
+                    {% if user.is_staff or user.is_superuser %}
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-primary">Go to Admin Dashboard</a>
+                    {% else %}
+                        <a href="{% url 'member_dashboard' %}" class="btn btn-primary">Go to My Dashboard</a>
+                        <a href="{% url 'class_list' %}" class="btn btn-login">Browse Classes</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-primary">Get Started</a>
+                    <a href="{% url 'login' %}" class="btn btn-login">Member Login</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -185,68 +309,161 @@
     </div>
 </section>
 
-<section class="home-section services" id="services">
-    <div class="container">
-        <div class="section-title">
-            <h2>Our Classes & Services</h2>
-            <p>Stay active and engaged with a range of classes and services designed for your fitness needs.</p>
-        </div>
 
-        <div class="card-grid">
-            <div class="card">
-                <h3>Strength Training</h3>
-                <p>Improve muscle strength and endurance with guided strength training sessions.</p>
-            </div>
-            <div class="card">
-                <h3>Cardio Classes</h3>
-                <p>Boost stamina and heart health with energising cardio-based workouts.</p>
-            </div>
-            <div class="card">
-                <h3>Yoga Sessions</h3>
-                <p>Relax your body and mind through yoga classes focused on flexibility and balance.</p>
-            </div>
-            <div class="card">
-                <h3>Personal Training</h3>
-                <p>Work one-on-one with experienced trainers to reach your personal fitness goals.</p>
-            </div>
-            <div class="card">
-                <h3>Zumba & Dance</h3>
-                <p>Enjoy fun and engaging workout sessions through music and movement.</p>
-            </div>
-            <div class="card">
-                <h3>Fitness Tracking</h3>
-                <p>Track your membership, payments, classes, and trainer support through our system.</p>
-            </div>
-        </div>
-    </div>
-</section>
 
 <section class="home-section plans" id="plans">
     <div class="container">
         <div class="section-title">
             <h2>Membership Plans</h2>
-            <p>Choose a plan that matches your fitness goals and schedule.</p>
+            <p>Choose a plan that matches your fitness goals and services you need.</p>
         </div>
 
         <div class="card-grid">
-            <div class="card plan-card">
-                <h3>Basic Plan</h3>
-                <div class="price">€29.99 / Month</div>
-                <p>Access to gym equipment and workout area during standard hours.</p>
+
+            <!-- BASIC PLAN -->
+            <div class="plan-link" onclick="openPlanModal('basic')">
+                <div class="card plan-card">
+                    <h3>Basic Plan</h3>
+                    <div class="price">£29.99 / Month</div>
+
+                    <ul style="text-align:left; margin-top:15px;">
+                        <li>✔ Gym equipment access</li>
+                        <li>✔ Workout area (standard hours)</li>
+                        <li>✔ Fitness tracking</li>
+                        <li>✖ Classes not included</li>
+                        <li>✖ No trainer support</li>
+                    </ul>
+                </div>
             </div>
-            <div class="card plan-card">
-                <h3>Standard Plan</h3>
-                <div class="price">€49.99 / Month</div>
-                <p>Includes gym access, group classes, and basic trainer guidance.</p>
+
+            <!-- STANDARD PLAN -->
+            <div class="plan-link" onclick="openPlanModal('standard')">
+                <div class="card plan-card">
+                    <h3>Standard Plan</h3>
+                    <div class="price">£49.99 / Month</div>
+
+                    <ul style="text-align:left; margin-top:15px;">
+                        <li>✔ Full gym access</li>
+                        <li>✔ Cardio classes</li>
+                        <li>✔ Yoga sessions</li>
+                        <li>✔ Zumba & Dance</li>
+                        <li>✔ Basic trainer guidance</li>
+                    </ul>
+                </div>
             </div>
-            <div class="card plan-card">
-                <h3>Premium Plan</h3>
-                <div class="price">€79.99 / Month</div>
-                <p>Full gym access, all classes, personal trainer support, and priority booking.</p>
+
+            <!-- PREMIUM PLAN -->
+            <div class="plan-link" onclick="openPlanModal('premium')">
+                <div class="card plan-card">
+                    <h3>Premium Plan</h3>
+                    <div class="price">£79.99 / Month</div>
+
+                    <ul style="text-align:left; margin-top:15px;">
+                        <li>✔ All classes included</li>
+                        <li>✔ Personal training</li>
+                        <li>✔ Priority class booking</li>
+                        <li>✔ Advanced fitness tracking</li>
+                        <li>✔ Dedicated trainer support</li>
+                    </ul>
+                </div>
             </div>
+
         </div>
     </div>
 </section>
+
+<div id="basicModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close-btn" onclick="closePlanModal('basic')">&times;</span>
+            <h3>Basic Plan</h3>
+            <span class="modal-badge">Starter</span>
+        </div>
+        <div class="modal-body">
+            <p>Perfect for beginners who want access to essential gym facilities.</p>
+            <ul>
+                <li>Access to gym equipment</li>
+                <li>Workout area during standard hours</li>
+                <li>Basic fitness support</li>
+                <li>Good for regular self-guided training</li>
+            </ul>
+            <div class="modal-price">£29.99</div>
+            <div class="modal-note">per month</div>
+           <div class="modal-actions">
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'choose_plan' 1 %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Choose Plan</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">Login to Choose</a>
+    {% endif %}
+</div>
+        </div>
+    </div>
+</div>
+
+<div id="standardModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close-btn" onclick="closePlanModal('standard')">&times;</span>
+            <h3>Standard Plan</h3>
+            <span class="modal-badge">Popular</span>
+        </div>
+        <div class="modal-body">
+            <p>A balanced plan for members who want classes and extra support.</p>
+            <ul>
+                <li>Full gym access</li>
+                <li>Group classes included</li>
+                <li>Basic trainer guidance</li>
+                <li>Ideal for regular fitness improvement</li>
+            </ul>
+            <div class="modal-price">£49.99</div>
+            <div class="modal-note">per month</div>
+           <div class="modal-actions">
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'choose_plan' 2 %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Choose Plan</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">Login to Choose</a>
+    {% endif %}
+</div>
+        </div>
+    </div>
+</div>
+
+<div id="premiumModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close-btn" onclick="closePlanModal('premium')">&times;</span>
+            <h3>Premium Plan</h3>
+            <span class="modal-badge">Best Value</span>
+        </div>
+        <div class="modal-body">
+            <p>The complete fitness package with priority services and premium support.</p>
+            <ul>
+                <li>Full gym access</li>
+                <li>All classes included</li>
+                <li>Personal trainer support</li>
+                <li>Priority booking benefits</li>
+            </ul>
+            <div class="modal-price">£79.99</div>
+            <div class="modal-note">per month</div>
+            <div class="modal-actions">
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'choose_plan' 3 %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Choose Plan</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-primary">Login to Choose</a>
+    {% endif %}
+</div>
+        </div>
+    </div>
+</div>
 
 <section class="home-section contact-section" id="contact">
     <div class="container">
@@ -258,7 +475,36 @@
         <p>Phone: +61 400 123 456</p>
         <p>Address: UK</p>
         <br>
-        <a href="{% url 'register' %}" class="btn btn-primary">Become a Member</a>
+
+        {% if user.is_authenticated %}
+            {% if user.is_staff or user.is_superuser %}
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+            {% else %}
+                <a href="{% url 'member_dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'register' %}" class="btn btn-primary">Become a Member</a>
+        {% endif %}
     </div>
 </section>
+
+<script>
+function openPlanModal(plan) {
+    document.getElementById(plan + "Modal").style.display = "flex";
+}
+
+function closePlanModal(plan) {
+    document.getElementById(plan + "Modal").style.display = "none";
+}
+
+window.onclick = function(event) {
+    const modals = ['basicModal', 'standardModal', 'premiumModal'];
+    modals.forEach(function(modalId) {
+        const modal = document.getElementById(modalId);
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+}
+</script>
 {% endblock %}

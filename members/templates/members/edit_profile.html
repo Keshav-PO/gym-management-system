@@ -33,7 +33,12 @@
         </form>
 
         <div class="helper-text">
-            <a href="{% url 'dashboard' %}">Go to Dashboard</a>
+            
+            {% if request.user.is_staff or request.user.is_superuser %}
+    <a href="{% url 'admin_dashboard' %}">Go to Dashboard</a>
+{% else %}
+    <a href="{% url 'member_dashboard' %}">Go to Dashboard</a>
+{% endif %}
         </div>
     </div>
 </section>

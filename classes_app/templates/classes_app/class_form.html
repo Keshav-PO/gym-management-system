@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Class{% endblock %}
+{% block page_title %}Add Class{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Create New Gym Class</h2>
+
+<div class="form-card">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Save Class</button>
+    </form>
+</div>
+{% endblock %}

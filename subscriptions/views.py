@@ -4,6 +4,7 @@ from calendar import monthrange
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
+from gymproject.firebase_config import db
 from .models import MembershipPlan, Subscription
 
 
@@ -22,6 +23,9 @@ def membership_plans(request):
 
 @login_required
 def choose_plan(request, plan_id):
+    if request.method != 'POST':
+        return redirect('plan_list')
+
     plan = get_object_or_404(MembershipPlan, id=plan_id)
 
     Subscription.objects.filter(member=request.user, status='Active').update(status='Expired')
@@ -29,17 +33,35 @@ def choose_plan(request, plan_id):
     start_date = date.today()
     end_date = add_months(start_date, plan.duration_months)
 
-    Subscription.objects.create(
+    subscription = Subscription.objects.create(
         member=request.user,
         plan=plan,
+        start_date=start_date,
         end_date=end_date,
         status='Active'
     )
+
+    db.collection("subscriptions").add({
+        "member_id": request.user.id,
+        "username": request.user.username,
+        "email": request.user.email,
+        "plan_id": plan.id,
+        "plan_name": plan.name,
+        "price": float(plan.price),
+        "duration_months": plan.duration_months,
+        "start_date": str(start_date),
+        "end_date": str(end_date),
+        "status": "Active"
+    })
 
     return redirect('my_subscription')
 
 
 @login_required
 def my_subscription(request):
-    subscription = Subscription.objects.filter(member=request.user, status='Active').order_by('-start_date').first()
+    subscription = Subscription.objects.filter(
+        member=request.user,
+        status='Active'
+    ).order_by('-start_date').first()
+
     return render(request, 'subscriptions/my_subscription.html', {'subscription': subscription})

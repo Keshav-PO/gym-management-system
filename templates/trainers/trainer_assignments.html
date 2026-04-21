@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Trainer Assignments{% endblock %}
+{% block page_title %}Trainer Assignments{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Assigned Trainers</h2>
+
+<div style="margin-bottom: 18px;">
+    <a href="{% url 'assign_trainer' %}" class="btn">+ Assign Trainer</a>
+</div>
+
+<div class="table-card">
+    {% if assignments %}
+        {% for item in assignments %}
+            <div class="card" style="margin-bottom: 18px;">
+                <h3>{{ item.trainer.name }}</h3>
+                <p><strong>Class:</strong> {{ item.gym_class.title }}</p>
+                <p><strong>Date:</strong> {{ item.gym_class.class_date }}</p>
+                <p><strong>Time:</strong> {{ item.gym_class.class_time }}</p>
+                <p><strong>Assigned On:</strong> {{ item.assigned_date }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-text">No trainer assignments yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

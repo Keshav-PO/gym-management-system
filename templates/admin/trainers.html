@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Trainers{% endblock %}
+{% block page_title %}Manage Trainers{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Trainer Assignments</h2>
+
+<div class="table-card">
+    {% if trainers %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Trainer Name</th>
+                    <th>Specialization</th>
+                    <th>Assigned Class</th>
+                    <th>Hours</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trainer in trainers %}
+                <tr>
+                    <td>{{ trainer.name }}</td>
+                    <td>{{ trainer.specialization }}</td>
+                    <td>{{ trainer.assigned_class }}</td>
+                    <td>{{ trainer.assigned_hours }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty-text">No trainers found.</p>
+    {% endif %}
+</div>
+{% endblock %}

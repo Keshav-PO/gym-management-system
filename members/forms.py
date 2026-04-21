@@ -5,13 +5,13 @@ from .models import MemberProfile
 
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
-    fitness_goal = forms.CharField(max_length=100)
+
+    fitness_goal = forms.ChoiceField(
+        choices=MemberProfile.FITNESS_GOAL_CHOICES
+    )
+
     experience_level = forms.ChoiceField(
-        choices=[
-            ('Beginner', 'Beginner'),
-            ('Intermediate', 'Intermediate'),
-            ('Advanced', 'Advanced'),
-        ]
+        choices=MemberProfile.EXPERIENCE_CHOICES
     )
 
     class Meta:
@@ -23,12 +23,11 @@ class RegisterForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         self.fields['username'].help_text = ''
         self.fields['email'].help_text = ''
         self.fields['password'].help_text = ''
 
-    def save(self):
+    def save(self, commit=True):
         user = User.objects.create_user(
             username=self.cleaned_data['username'],
             email=self.cleaned_data['email'],
@@ -46,13 +45,13 @@ class RegisterForm(forms.ModelForm):
 
 class EditProfileForm(forms.ModelForm):
     email = forms.EmailField()
-    fitness_goal = forms.CharField(max_length=100)
+
+    fitness_goal = forms.ChoiceField(
+        choices=MemberProfile.FITNESS_GOAL_CHOICES
+    )
+
     experience_level = forms.ChoiceField(
-        choices=[
-            ('Beginner', 'Beginner'),
-            ('Intermediate', 'Intermediate'),
-            ('Advanced', 'Advanced'),
-        ]
+        choices=MemberProfile.EXPERIENCE_CHOICES
     )
 
     class Meta:

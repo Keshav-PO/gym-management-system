@@ -2,11 +2,28 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import GymClass, ClassRegistration
+from .forms import GymClassForm
 
 
 def class_list(request):
     classes = GymClass.objects.all().order_by('class_date', 'class_time')
     return render(request, 'classes_app/class_list.html', {'classes': classes})
+
+
+@login_required
+def class_create(request):
+    if not (request.user.is_staff or request.user.is_superuser):
+        return redirect('member_dashboard')
+
+    if request.method == 'POST':
+        form = GymClassForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('class_list')
+    else:
+        form = GymClassForm()
+
+    return render(request, 'classes_app/class_form.html', {'form': form, 'page_title': 'Add Class'})
 
 
 @login_required

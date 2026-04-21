@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Classes{% endblock %}
+{% block page_title %}Manage Classes{% endblock %}
+
+{% block content %}
+
+<h2 class="section-title">Gym Classes</h2>
+
+<div class="table-card">
+    {% if classes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Class Name</th>
+                    <th>Schedule</th>
+                    <th>Trainer</th>
+                    <th>Capacity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for gym_class in classes %}
+                <tr>
+                    <td>{{ gym_class.name }}</td>
+                    <td>{{ gym_class.schedule }}</td>
+                    <td>{{ gym_class.trainer }}</td>
+                    <td>{{ gym_class.capacity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty-text">No classes available.</p>
+    {% endif %}
+</div>
+{% endblock %}

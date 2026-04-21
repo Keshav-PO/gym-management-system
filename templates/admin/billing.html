@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Billing & Payments{% endblock %}
+{% block page_title %}Billing & Payments{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Payments Overview</h2>
+
+<div class="table-card">
+    {% if payments %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Member</th>
+                    <th>Amount</th>
+                    <th>Payment Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.member }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.payment_date }}</td>
+                    <td>{{ payment.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="empty-text">No payment records available.</p>
+    {% endif %}
+</div>
+{% endblock %}
